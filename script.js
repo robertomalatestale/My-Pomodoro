@@ -4,6 +4,7 @@ let startTimer;
 let startPomo = 1800; //30 minutos = 1800 segundos
 let check = true;
 const startSound = document.getElementById("startSound");
+updateTitle("30", "00");
 
 //Function to reset Pomodoro to initial conditions
 function startConditions() {
@@ -13,7 +14,17 @@ function startConditions() {
   document.querySelector(".play").textContent = "Start";
   document.querySelector(".timer").textContent = `30:00`;
   document.querySelector(".timeto").textContent = "Time to focus! 🤓";
+  updateTitle("30", "00");
   document.body.style.backgroundColor = "#b3b4bd";
+}
+
+//Function to display the timer in the navigator tab
+function updateTitle(minutes, seconds) {
+  if (document.querySelector(".timeto").textContent === "Time to focus! 🤓") {
+    document.title = `${minutes}:${seconds} - Time to focus!`;
+  } else {
+    document.title = `${minutes}:${seconds} - Time to relax!`;
+  }
 }
 
 //Main button: Start Pomodoro
@@ -46,6 +57,7 @@ function pomoTimerStart() {
       minutes = "0" + minutes;
     }
     document.querySelector(".timer").textContent = `${minutes}:${seconds}`;
+    updateTitle(minutes, seconds);
     startPomo--;
   }
 }
@@ -67,6 +79,7 @@ function restTime() {
   document.querySelector(".play").textContent = "Start";
   document.querySelector(".timer").textContent = `06:00`;
   document.querySelector(".timeto").textContent = "Time to relax! 😁";
+  updateTitle("06", "00");
   document.body.style.backgroundColor = "#ADD8E6";
 }
 
