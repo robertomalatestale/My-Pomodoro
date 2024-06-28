@@ -5,3 +5,4 @@ This project was made to practice my concepts with Javascript and DOM manipulati
 
 # Web Preview
 https://robertomalatestale.github.io/My-Pomodoro/
+![image](https://github.com/robertomalatestale/My-Pomodoro/assets/173962384/48aaf077-407b-4272-b173-a18095d407d4)
