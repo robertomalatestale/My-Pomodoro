@@ -1,12 +1,14 @@
 "use strict";
 
 let startTimer;
-let startPomo = 1800; //30 minutos = 1800 segundos
+let startPomo = 1800; //30 minutes = 1800 seconds
 let check = true;
+let studyCounter = 0;
+let breakCounter = 0;
 const startSound = document.getElementById("startSound");
 updateTitle("30", "00");
 
-//Function to reset Pomodoro to initial conditions
+//Functions to put Pomodoro onto initial conditions or break conditions
 function startConditions() {
   clearInterval(startTimer);
   startPomo = 1800;
@@ -16,6 +18,32 @@ function startConditions() {
   document.querySelector(".timeto").textContent = "Time to focus! 🤓";
   updateTitle("30", "00");
   document.body.style.backgroundColor = "#b3b4bd";
+}
+
+function restTime() {
+  check = true;
+  clearInterval(startTimer);
+  startPomo = 360;
+  document.querySelector(".play").textContent = "Start";
+  document.querySelector(".timer").textContent = `06:00`;
+  document.querySelector(".timeto").textContent = "Time to relax! 😁";
+  updateTitle("06", "00");
+  document.body.style.backgroundColor = "#ADD8E6";
+}
+
+//Study and Break Counters logic:
+function countersAdd() {
+  if (document.querySelector(".timeto").textContent === "Time to relax! 😁") {
+    breakCounter += 1;
+    document.querySelector(
+      ".counters"
+    ).textContent = `Study: ${studyCounter} Break: ${breakCounter}`;
+  } else {
+    studyCounter += 1;
+    document.querySelector(
+      ".counters"
+    ).textContent = `Study: ${studyCounter} Break: ${breakCounter}`;
+  }
 }
 
 //Function to display the timer in the navigator tab
@@ -45,8 +73,18 @@ function start() {
 }
 
 function pomoTimerStart() {
-  if (startPomo === 0) {
+  if (
+    startPomo === 0 &&
+    document.querySelector(".timeto").textContent === "Time to focus! 🤓"
+  ) {
+    countersAdd();
     restTime();
+  } else if (
+    startPomo === 0 &&
+    document.querySelector(".timeto").textContent === "Time to relax! 😁"
+  ) {
+    countersAdd();
+    startConditions();
   } else {
     let minutes = Math.floor(startPomo / 60);
     let seconds = startPomo % 60;
@@ -65,26 +103,27 @@ function pomoTimerStart() {
 //Skip Button
 function skipActual() {
   if (document.querySelector(".timeto").textContent === "Time to relax! 😁") {
+    countersAdd();
     startConditions();
   } else {
+    countersAdd();
     restTime();
   }
 }
 document.querySelector(".material-icon").addEventListener("click", skipActual);
-
-function restTime() {
-  check = true;
-  clearInterval(startTimer);
-  startPomo = 360;
-  document.querySelector(".play").textContent = "Start";
-  document.querySelector(".timer").textContent = `06:00`;
-  document.querySelector(".timeto").textContent = "Time to relax! 😁";
-  updateTitle("06", "00");
-  document.body.style.backgroundColor = "#ADD8E6";
-}
 
 //Maladoro Button: Reset pomodoro to 30 minutes
 document.querySelector(".maladoro").addEventListener("click", startConditions);
 
 //Break Button: Reset pomodoro to break event (6 minutes)
 document.querySelector(".break").addEventListener("click", restTime);
+
+//Reset Top Right Corner Button: Reset the Study and Break Counters
+document.querySelector(".reset").addEventListener("click", function () {
+  startConditions();
+  studyCounter = 0;
+  breakCounter = 0;
+  document.querySelector(
+    ".counters"
+  ).textContent = `Study: ${studyCounter} Break: ${breakCounter}`;
+});
