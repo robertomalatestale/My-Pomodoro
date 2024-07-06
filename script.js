@@ -120,10 +120,12 @@ document.querySelector(".break").addEventListener("click", restTime);
 
 //Reset Top Right Corner Button: Reset the Study and Break Counters
 document.querySelector(".reset").addEventListener("click", function () {
-  startConditions();
-  studyCounter = 0;
-  breakCounter = 0;
-  document.querySelector(
-    ".counters"
-  ).textContent = `Study: ${studyCounter} Break: ${breakCounter}`;
+  if (confirm("Are you sure you want to reset the cycles?")) {
+    startConditions();
+    studyCounter = 0;
+    breakCounter = 0;
+    document.querySelector(
+      ".counters"
+    ).textContent = `Study: ${studyCounter} Break: ${breakCounter}`;
+  }
 });
