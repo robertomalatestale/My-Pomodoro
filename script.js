@@ -3,8 +3,9 @@
 let startTimer;
 let startPomo = 1800; //30 minutes = 1800 seconds
 let check = true;
-let studyCounter = 0;
-let breakCounter = 0;
+let studyCounter = localStorage.getItem("studyCounter") ? parseInt(localStorage.getItem("studyCounter")) : 0;
+let breakCounter = localStorage.getItem("breakCounter")? parseInt(localStorage.getItem("breakCounter")): 0;
+document.querySelector(".counters").textContent = `Study: ${studyCounter} Break: ${breakCounter}`;
 const startSound = document.getElementById("startSound");
 updateTitle("30", "00");
 
@@ -34,15 +35,13 @@ function restTime() {
 //Study and Break Counters logic:
 function countersAdd() {
   if (document.querySelector(".timeto").textContent === "Time to relax! 😁") {
-    breakCounter += 1;
-    document.querySelector(
-      ".counters"
-    ).textContent = `Study: ${studyCounter} Break: ${breakCounter}`;
+    breakCounter++;
+    localStorage.setItem('breakCounter', breakCounter);
+    document.querySelector(".counters").textContent = `Study: ${studyCounter} Break: ${breakCounter}`;
   } else {
-    studyCounter += 1;
-    document.querySelector(
-      ".counters"
-    ).textContent = `Study: ${studyCounter} Break: ${breakCounter}`;
+    studyCounter++;
+    localStorage.setItem('studyCounter', studyCounter);
+    document.querySelector(".counters").textContent = `Study: ${studyCounter} Break: ${breakCounter}`;
   }
 }
 
@@ -123,7 +122,9 @@ document.querySelector(".reset").addEventListener("click", function () {
   if (confirm("Are you sure you want to reset the cycles?")) {
     startConditions();
     studyCounter = 0;
+    localStorage.setItem('studyCounter', studyCounter);
     breakCounter = 0;
+    localStorage.setItem('breakCounter', breakCounter);
     document.querySelector(
       ".counters"
     ).textContent = `Study: ${studyCounter} Break: ${breakCounter}`;
